@@ -20,9 +20,10 @@ func main() {
 		go checkLink(link, c)
 	}
 
-	for i := 0; i < len(links); i++ {
-		fmt.Println(<-c)
+	for {
+		go checkLink(<-c, c)
 	}
+
 }
 
 func checkLink(link string, c chan string) {
@@ -30,10 +31,10 @@ func checkLink(link string, c chan string) {
 
 	if err != nil {
 		fmt.Println(link, "might be down with error", err)
-		c <- "Might be down"
+		c <- link
 		return
 	}
 
 	fmt.Println(link, "is up")
-	c <- "its up"
+	c <- link
 }
